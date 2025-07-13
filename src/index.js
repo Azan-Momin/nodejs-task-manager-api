@@ -1,6 +1,5 @@
 const express = require('express');
 const connectDB = require('./db/mongoose.js');
-// require('./db/mongoose.js');
 const TaskRouter = require('./routes/task');
 
 // Run the Server
@@ -9,7 +8,8 @@ const app = express();
 // Connect to the database
 connectDB();
 
-// app.use(express.json());
+// Middlewares
+app.use(express.json());
 // Routers
 app.use(TaskRouter);
 
