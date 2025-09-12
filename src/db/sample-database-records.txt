@@ -1,0 +1,62 @@
+[
+  {
+    "name": "Alice Johnson",
+    "email": "alice.johnson@example.com",
+    "password": "pass1234",
+    "age": 28
+  },
+  {
+    "name": "Bob Smith",
+    "email": "bob.smith@example.com",
+    "password": "qwerty123",
+    "age": 34
+  },
+  {
+    "name": "Carol Davis",
+    "email": "carol.davis@example.com",
+    "password": "securepass",
+    "age": 22
+  },
+  {
+    "name": "David Lee",
+    "email": "david.lee@example.com",
+    "password": "letmein789",
+    "age": 30
+  },
+  {
+    "name": "Eva Martinez",
+    "email": "eva.martinez@example.com",
+    "password": "mypassXword",
+    "age": 26
+  },
+  {
+    "name": "Frank Wright",
+    "email": "frank.wright@example.com",
+    "password": "helloWorld1",
+    "age": 40
+  },
+  {
+    "name": "Grace Kim",
+    "email": "grace.kim@example.com",
+    "password": "passGrace99",
+    "age": 27
+  },
+  {
+    "name": "Henry Adams",
+    "email": "henry.adams@example.com",
+    "password": "henrySecure",
+    "age": 36
+  },
+  {
+    "name": "Isla Brown",
+    "email": "isla.brown@example.com",
+    "password": "brownie123",
+    "age": 24
+  },
+  {
+    "name": "Jack Wilson",
+    "email": "jack.wilson@example.com",
+    "password": "wilsonJack!",
+    "age": 31
+  }
+]

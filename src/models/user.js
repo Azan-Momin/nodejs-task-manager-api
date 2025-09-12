@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -39,7 +40,13 @@ const userSchema = new mongoose.Schema({
                 throw new Error ('Age should be a positive number.');
             }
         }
-    }
+    },
+    tokens: [{
+        token: {
+            type: String,
+            required: true
+        }
+    }]
 });
 
 // Middleware to hash the password before saving it
@@ -52,6 +59,15 @@ userSchema.pre('save', async function (next) {
 
     next();
 });
+
+// Create an auth token for user
+userSchema.methods.generateAuthToken = async function () {
+    const user = this;
+    const token = jwt.sign({_id: user._id.toString()}, 'mySecretKey');
+    user.tokens = user.tokens.concat({token});
+    await user.save();
+    return token;
+}
 
 // Find by Credentials
 // For this to work, ensure that the stored password is already hashed *
