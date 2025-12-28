@@ -2,7 +2,7 @@ const express = require('express');
 const User = require('../models/user');
 const router = express.Router();
 
-// Create a user (User Sign-up)
+// Create a user / User Sign-up (keep the user logged in using a token)
 router.post('/users', async (req, res) => {
     const user = new User(req.body);
 
