@@ -1,5 +1,6 @@
 const express = require('express');
 const User = require('../models/user');
+const auth = require('../middleware/auth');
 const router = express.Router();
 
 // Create a user / User Sign-up (keep the user logged in using a token)
@@ -17,7 +18,8 @@ router.post('/users', async (req, res) => {
 });
 
 // Read all users
-router.get('/users', async (req, res) => {
+/*
+router.get('/users', auth, async (req, res) => {
     try {
         const users = await User.find({});
         res.send(users)
@@ -25,6 +27,12 @@ router.get('/users', async (req, res) => {
         console.log(e);
         res.status(500).send()
     }
+});
+*/
+
+// Fetch the user profile for logged-in user
+router.get('/users/me', auth, async (req, res) => {
+    res.send(req.user);
 });
 
 // Read a user with ID

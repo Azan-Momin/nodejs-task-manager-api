@@ -1,0 +1,25 @@
+const jwt = require('jsonwebtoken');
+const User = require('../models/user');
+
+const auth = async (req, res, next) => {
+    // console.log('In auth middleware...');
+    // next();
+    try {
+        const token = req.header('Authorization').replace('Bearer ', '');
+        const decoded = jwt.verify(token, 'mySecretKey');   // returns and object with user-id and iat
+        //console.log(token);
+        //console.log(decoded);
+        const user = await User.findOne({_id: decoded._id, 'tokens.token': token});
+
+        if (!user) {
+            throw new Error();
+        }
+
+        req.user = user;    // Assign user to the request object as it will be used in further operations
+        next();
+    } catch (e) {
+        res.status(401).send({error: 'Please authenticate...'})
+    }
+}
+
+module.exports = auth;
