@@ -1,7 +1,7 @@
 const express = require('express');
 const connectDB = require('./db/mongoose.js');
 const TaskRouter = require('./routes/task');
-const UserRouter = require('./routes/user')
+const UserRouter = require('./routes/user');
 
 // Run the Server
 const app = express();

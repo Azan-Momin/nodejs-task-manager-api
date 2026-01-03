@@ -1,6 +1,7 @@
 const express = require('express');
 const User = require('../models/user');
 const auth = require('../middleware/auth');
+const jwt = require('jsonwebtoken');
 const router = express.Router();
 
 // Create a user / User Sign-up (keep the user logged in using a token)
@@ -106,6 +107,35 @@ router.post('/users/login', async (req, res) => {
     } catch (e) {
         console.log(e);
         res.status(400).send();
+    }
+});
+
+// User Logout (current session)
+router.post('/users/logout', auth, async (req, res) => {
+    try {
+        // console.log('tokens: ', req.user.tokens);
+        req.user.tokens = req.user.tokens.filter((tokenObj) => {
+            // console.log('tokenObj', tokenObj);
+            return tokenObj.token !== req.token;
+        });
+        await req.user.save();
+
+        res.send('logged out the user from current session.');
+    } catch (e) {
+        res.status(500).send();
+    }
+});
+
+// User Logout (all sessions)
+router.post('/users/logoutAll', auth, async (req, res) => {
+    try {
+        // console.log(req.user);
+        req.user.tokens = [];
+        // console.log(req.user.tokens);
+        await req.user.save();
+        res.status(200).send('Logged out user from all sessions...')
+    } catch (e) {
+        res.status(500).send()
     }
 });
 
