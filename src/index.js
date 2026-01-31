@@ -49,6 +49,8 @@ app.listen(PORT, () => {
     console.log('Server started on: http://localhost:' + PORT);
 });
 
+
+
 // ---------------------------------------------------- Testing Code (Playground) --------------------------------------------------------------------
 /* 
 // Task: Generate a JSON Web Token and verify the same
@@ -65,6 +67,7 @@ const generateToken = async () => {
 generateToken();
 */
 
+/*
 // Task: 
 // Approach#1: Manually converting an object to a JSON string
 const pet = {
@@ -83,4 +86,35 @@ myPet.toJSON = function () {
 }
 
 myPet.toJSON();
+*/
 
+// Task: Get a value (owner id) from a record (task)
+/*
+const Task = require('./models/task');
+
+const main = async () => {
+    const task = await Task.findById('697e511e70b0443f2e253922')
+    // console.log(task);
+    // await task.populate('owner').execPopulate();
+    // await task.populate('owner').exec();
+    console.log(task.owner);    // gives - new ObjectId('697e510170b0443f2e25391a') instead of just '697e510170b0443f2e25391a' ???
+    await task.populate('owner');
+    console.log(task.owner);    // After populating, it gives you the entire user record, instead of just the owner id
+}
+
+main();
+*/
+
+// Task: Get values (tasks) from a record (user)
+const User = require('./models/user.js');
+
+const main = async () => {
+    const user = await User.findById('697e510170b0443f2e25391a')
+    // await user.populate('tasks').execPopulate();
+    // await user.populate('tasks').exec();
+    // console.log(user.tasks);    // undefined before the tasks are populated
+    await user.populate('tasks');
+    console.log(user.tasks);
+}
+
+main();

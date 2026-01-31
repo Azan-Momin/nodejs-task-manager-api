@@ -49,6 +49,13 @@ const userSchema = new mongoose.Schema({
     }]
 });
 
+// Foreign (virtual) field
+userSchema.virtual('tasks', {
+    ref: 'Task',
+    localField: '_id',
+    foreignField: 'owner'
+});
+
 // Middleware to hash the password before saving it
 userSchema.pre('save', async function (next) {
     const user = this;
