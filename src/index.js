@@ -48,3 +48,39 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log('Server started on: http://localhost:' + PORT);
 });
+
+// ---------------------------------------------------- Testing Code (Playground) --------------------------------------------------------------------
+/* 
+// Task: Generate a JSON Web Token and verify the same
+const jwt = require('jsonwebtoken');
+
+const generateToken = async () => {
+    const token = jwt.sign({_id: 'abcde12345'}, 'mySecretKey', {expiresIn: '7 days'});  // Creates a hashed token
+    console.log(token);
+
+    const data = jwt.verify(token, 'mySecretKey');
+    console.log(data);
+}
+
+generateToken();
+*/
+
+// Task: 
+// Approach#1: Manually converting an object to a JSON string
+const pet = {
+    name: 'Tom'
+}
+console.log(JSON.stringify(pet));
+
+// Approach#2: Using the toJSON user-defined function approach to return data
+const myPet = {
+    name: 'Tom'
+}
+
+myPet.toJSON = function () {
+    console.log(this);
+    return this; // Whatever you return here will show up in the JSON.stringify() function for the current object
+}
+
+myPet.toJSON();
+

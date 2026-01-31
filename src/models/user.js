@@ -69,6 +69,18 @@ userSchema.methods.generateAuthToken = async function () {
     return token;
 }
 
+// Get User's Public Profile - hide trivial and critical information
+// userSchema.methods.getPublicProfile = function (req, res) {
+userSchema.methods.toJSON = function() {
+    const user = this;
+    const userObj = user.toObject();    // If user is already an object, then why are we converting it to object again
+    
+    // Remove details from user object
+    delete userObj.password;
+    delete userObj.tokens;
+    return userObj;
+}
+
 // Find by Credentials
 // For this to work, ensure that the stored password is already hashed *
 userSchema.statics.findByCredentials = async (email, password) => {
