@@ -37,6 +37,7 @@ router.get('/users/me', auth, async (req, res) => {
 });
 
 // Read a user with ID
+/*
 router.get('/users/:id', async (req, res) => {
     const _id = req.params.id;
 
@@ -52,8 +53,10 @@ router.get('/users/:id', async (req, res) => {
         res.status(500).send()
     }
 });
+*/
 
-// Update a user
+// Update a user through an id
+/*
 router.patch('/users/:id', async (req, res) => {
     const updates = Object.keys(req.body),
     allowedUpdates = ['name', 'email', 'password', 'age'],
@@ -81,8 +84,35 @@ router.patch('/users/:id', async (req, res) => {
         res.status(400).send(e);
     }
 });
+*/
+
+// Update the current user
+router.patch('/users/me', auth, async (req, res) => {
+    const updates = Object.keys(req.body),
+    allowedUpdates = ['name', 'email', 'password', 'age'],
+    isValidOperation = updates.every(update => allowedUpdates.includes(update));
+
+    if (!isValidOperation) {
+        return res.status(400).send({error: 'Invalid update!'});
+    }
+
+    try {
+        const user = await User.findById(req.user._id);
+
+        updates.forEach((update) => {
+            user[update] = req.body[update]
+        });
+        await user.save();
+
+        res.send(user);
+    } catch (e) {
+        console.log('Unable to update user profile...');
+        res.status(400).send(e);
+    }
+});
 
 // Delete a user
+/*
 router.delete('/users/:id', async (req, res) => {
 
     try {
@@ -92,6 +122,21 @@ router.delete('/users/:id', async (req, res) => {
             return res.status(404).send();
         }
         res.send(user);
+    } catch (e) {
+        console.log(e);
+        res.status(500).send()
+    }
+});
+*/
+
+// Delete the current user
+router.delete('/users/me', auth, async (req, res) => {
+
+    try {
+        const user = await User.findByIdAndDelete(req.user._id);
+
+        await req.user.remove();
+        res.send(req.user);
     } catch (e) {
         console.log(e);
         res.status(500).send()
