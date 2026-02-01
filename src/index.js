@@ -106,6 +106,7 @@ main();
 */
 
 // Task: Get values (tasks) from a record (user)
+/*
 const User = require('./models/user.js');
 
 const main = async () => {
@@ -118,3 +119,4 @@ const main = async () => {
 }
 
 main();
+*/
