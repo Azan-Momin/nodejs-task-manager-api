@@ -55,14 +55,16 @@ router.get('/tasks', auth, async (req, res) => {
 router.get('/tasks', auth, async (req, res) => {
     try {
         const match = {};
-
-        console.log(req.query.completed);
+        const sort = {};
 
         if (req.query.completed) {
             match.completed = (req.query.completed === 'true');
         }
 
-        console.log(match.completed);
+        if (req.query.sortBy) {
+            const parts = req.query.sortBy.split(':');
+            sort[parts[0]] = (parts[1] === 'desc' ? -1 : 1);
+        }
 
         // Find the 'completed / pending' tasks (hardcoded)
         // const tasks = await req.user.populate({
@@ -77,7 +79,12 @@ router.get('/tasks', auth, async (req, res) => {
             match,
             options: {
                 limit: parseInt(req.query.limit),
-                skip: parseInt(req.query.skip)
+                skip: parseInt(req.query.skip),
+                // static / hard-coded
+                // sort: {
+                //     createdAt: -1
+                // }
+                sort
             }
         });
         res.send(req.user.tasks);        
