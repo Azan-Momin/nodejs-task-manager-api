@@ -129,17 +129,14 @@ router.delete('/users/:id', async (req, res) => {
 });
 */
 
-// Delete the current user
+// Delete the current user (and its associated tasks)
 router.delete('/users/me', auth, async (req, res) => {
-
     try {
-        const user = await User.findByIdAndDelete(req.user._id);
-
-        await req.user.remove();
+        await req.user.deleteOne();
         res.send(req.user);
     } catch (e) {
         console.log(e);
-        res.status(500).send()
+        res.status(500).send();
     }
 });
 

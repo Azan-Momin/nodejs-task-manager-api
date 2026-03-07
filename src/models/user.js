@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const Task = require('./task');
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -105,6 +106,28 @@ userSchema.statics.findByCredentials = async (email, password) => {
 
     return user;
 }
+
+// Delete all the tasks of a user, if the user profile is deleted ('Pre' not supported by deleteOne)
+// userSchema.pre('deleteOne', async function (next) {
+//     const user = this;  // 'this' doesn't point to the user object 
+//     await Task.deleteMany({ owner: user._id });
+//     next();
+// });
+
+userSchema.pre('deleteOne', {document: true, query: false}, async function (next) {
+    const user = this;
+    await Task.deleteMany({ owner: user._id });
+    next();
+});
+
+// Delete all the tasks of a user, if the user profile is deleted (using schema methods)
+// userSchema.methods.deleteUserAndTheirTasks = async function () {
+//     const user = this;
+//     await Task.deleteMany({ owner: user._id });
+//     await user.deleteOne();
+// }
+
+
 
 const User = mongoose.model('User', userSchema);
 
