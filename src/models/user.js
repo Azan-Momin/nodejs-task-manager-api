@@ -48,7 +48,7 @@ const userSchema = new mongoose.Schema({
             required: true
         }
     }]
-});
+}, { timestamps: true });
 
 // Foreign (virtual) field
 userSchema.virtual('tasks', {

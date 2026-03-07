@@ -34,6 +34,7 @@ router.get('/tasks', async (req, res) => {
 */
 
 // Read all tasks created by the current user
+/*
 router.get('/tasks', auth, async (req, res) => {
     try {
         // Find tasks based on owner id of the tasks
@@ -48,6 +49,45 @@ router.get('/tasks', auth, async (req, res) => {
         res.status(500).send(e);
     }
 });
+*/
+
+// Read all 'completed' tasks created by the current user
+router.get('/tasks', auth, async (req, res) => {
+    try {
+        const match = {};
+
+        console.log(req.query.completed);
+
+        if (req.query.completed) {
+            match.completed = (req.query.completed === 'true');
+        }
+
+        console.log(match.completed);
+
+        // Find the 'completed / pending' tasks (hardcoded)
+        // const tasks = await req.user.populate({
+        //     path: 'tasks',
+        //     match: {
+        //         completed: false
+        //     }
+        // });
+        // Find the 'completed / pending' tasks (dynamic)
+        const tasks = await req.user.populate({
+            path: 'tasks',
+            match,
+            options: {
+                limit: parseInt(req.query.limit),
+                skip: parseInt(req.query.skip)
+            }
+        });
+        res.send(req.user.tasks);        
+    } catch (e) {
+        console.log('Error: ', e);
+        res.status(500).send(e);
+    }
+}
+);
+
 
 // Get a task by Id
 router.get('/tasks/:id', auth, async (req, res) => {

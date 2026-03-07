@@ -16,7 +16,8 @@ const TaskSchema = new mongoose.Schema({
         required: true,        
         ref: 'User' // Should always be inside quotes
     }
-}/*, {
+}, { timestamps: true }
+/*, {
     toJSON: {virtuals: true}
 }*/);
 
