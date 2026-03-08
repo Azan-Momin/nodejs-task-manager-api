@@ -187,7 +187,7 @@ router.post('/users/logoutAll', auth, async (req, res) => {
 // router.post('/users/me/avatar', u)
 const upload = multer({ dest: 'images/avatars/' });
 
-router.post('/user/me/avatar', auth, upload.single('avatar'), (req, res, next) => {
+router.post('/users/me/avatar', auth, upload.single('avatar'), (req, res, next) => {
     res.send(200);
 });
 
