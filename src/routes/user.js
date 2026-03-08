@@ -184,11 +184,42 @@ router.post('/users/logoutAll', auth, async (req, res) => {
 });
 
 // Upload User avatar
-// router.post('/users/me/avatar', u)
-const upload = multer({ dest: 'images/avatars/' });
+// * Multer configuration *
+const upload = multer({
+    dest: 'images/avatars/',
+    path: 'avatar',
+    limits: {
+        fileSize: 1000000
+     },
+    fileFilter (req, file, cb) {
+        // Upload PDF file only
+        // if (!file.originalname.endsWith('.pdf')) {
+        //     return cb(new Error('Upload only a PDF file...'));
+        // }
 
+        // Upload doc / docx file only
+        // if (!file.originalname.match(/\.(doc|docx)$/)) {
+        //     return cb(new Error('Upload only a Document file...'));
+        // }
+
+        // Upload JPG / JPEG / PNG file only
+        if (!file.originalname.match(/\.(JPG|jpg|JPEG|PNG)$/)) {
+            return cb(new Error('Upload only an Image file with format JPG / JPEG / PNG...'));
+        }
+
+        cb(undefined, true);
+        
+    }});
+
+// Upload just the avatar
+// router.post('/users/me/avatar', auth, upload.single('avatar'), (req, res, next) => {
+//     res.send(200);
+// });
+
+// Upload just the avatar (max file size: 1MB)
 router.post('/users/me/avatar', auth, upload.single('avatar'), (req, res, next) => {
     res.send(200);
 });
+
 
 module.exports = router;
