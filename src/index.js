@@ -120,3 +120,14 @@ const main = async () => {
 
 main();
 */
+
+// Multer demo
+/*
+const multer = require('multer');
+const upload = multer({ dest: 'images/' });
+
+app.post('/upload', upload.single('avatar'), (req, res, next) => {
+    res.send(200);
+});
+*/
+

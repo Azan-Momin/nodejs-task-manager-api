@@ -3,6 +3,7 @@ const User = require('../models/user');
 const auth = require('../middleware/auth');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
+const multer = require('multer');
 
 // Create a user / User Sign-up (keep the user logged in using a token)
 router.post('/users', async (req, res) => {
@@ -180,6 +181,14 @@ router.post('/users/logoutAll', auth, async (req, res) => {
     } catch (e) {
         res.status(500).send()
     }
+});
+
+// Upload User avatar
+// router.post('/users/me/avatar', u)
+const upload = multer({ dest: 'images/avatars/' });
+
+router.post('/user/me/avatar', auth, upload.single('avatar'), (req, res, next) => {
+    res.send(200);
 });
 
 module.exports = router;
