@@ -51,7 +51,7 @@ app.listen(PORT, () => {
 
 
 
-// ---------------------------------------------------- Testing Code (Playground) --------------------------------------------------------------------
+// ---------------------------------------------------------------- Playground ----------------------------------------------------------------------
 /* 
 // Task: Generate a JSON Web Token and verify the same
 const jwt = require('jsonwebtoken');
@@ -121,13 +121,39 @@ const main = async () => {
 main();
 */
 
-// Multer demo
+// Task: Upload a file using multer
+// Accept only doc or docx file type with file size not more than 1 MB
 /*
 const multer = require('multer');
-const upload = multer({ dest: 'images/' });
+const upload = multer({
+    dest: 'images',
+    limits: {
+        fileSize: 1000000
+    },
+    fileFilter(req, file, cb) {
+        if (!file.originalname.match(/\.(doc|docx)$/i)) {
+            return cb(new Error('Please upload a Word document!'));
+        }
 
-app.post('/upload', upload.single('avatar'), (req, res, next) => {
-    res.send(200);
+        cb(null, true);
+    }
 });
-*/
 
+const errorMiddleware = (req, res, next) => {
+    throw new Error('Error from middelware..');
+}
+
+app.post('/upload',
+    upload.single('upload'),
+    // Success middleware
+    (req, res) => {
+        res.status(200).send({message: 'File uploaded sccessfully!'});
+    },
+    // Failure / error middleware
+    (error, req, res, next) => {
+    res.status(400).send({
+        error: error.message
+    });
+});
+// Here the text 'upload' is the name of the input form field in your web page (UI) or postman that you will use to upload the file
+*/

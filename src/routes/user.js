@@ -183,7 +183,7 @@ router.post('/users/logoutAll', auth, async (req, res) => {
     }
 });
 
-// Upload User avatar
+// Upload a User avatar image
 // * Multer configuration *
 const upload = multer({
     dest: 'images/avatars/',
@@ -198,16 +198,16 @@ const upload = multer({
         // }
 
         // Upload doc / docx file only
-        // if (!file.originalname.match(/\.(doc|docx)$/)) {
+        // if (!file.originalname.match(/\.(doc|docx)$/i)) {
         //     return cb(new Error('Upload only a Document file...'));
         // }
 
         // Upload JPG / JPEG / PNG file only
-        if (!file.originalname.match(/\.(JPG|jpg|JPEG|PNG)$/)) {
-            return cb(new Error('Upload only an Image file with format JPG / JPEG / PNG...'));
+        if (!file.originalname.match(/\.(jpg|jpeg|png)$/i)) {
+            return cb(new Error('Upload only an Image file with format JPG / JPEG / PNG and size less than 1 MB...'));
         }
 
-        cb(undefined, true);
+        cb(null, true);
         
     }});
 
@@ -218,8 +218,15 @@ const upload = multer({
 
 // Upload just the avatar (max file size: 1MB)
 router.post('/users/me/avatar', auth, upload.single('avatar'), (req, res, next) => {
-    res.send(200);
+    res.status(200).send({
+        message: 'User avatar image uploaded successfully!'
+    });
+}, (error, req, res, next) => {
+    res.status(400).send({
+        message: error.message
+    });
 });
+// Here the text 'avatar' is the name of the input form field in your web page (UI) or postman that you will use to upload the file
 
 
 module.exports = router;
